@@ -46,6 +46,7 @@ class MapElement(XMLElement):
 class UserFile(models.Model):
 	xml_text = models.TextField() 
 	def __str__(self):
+		found_error_object = False
 		for line in self.xml_text.split('\n'):
 			if ('<map' in line):
 				obj = MapElement(line)
