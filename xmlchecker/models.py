@@ -54,14 +54,35 @@ class UserFile(models.Model):
 		md5_obj = md5.new()
 		md5_obj.update(self.xml_text)
 		hash_str = md5_obj.hexdigest() 
-		err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
-		err_obj.save()
-		return hash_str
+		query_to_list = list(Errors.objects.all())
+		if query_to_list:
+			for item in query_to_list:
+				if str(item) == hash_str:
+					return hash_str + 'old'
+					found_error_object = True
+				if not found_error_object:
+					err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
+					err_obj.save()
+		else:
+			err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
+			err_obj.save()
+			return hash_str
 	def __unicode__(self):
+		md5_obj = md5.new()
+		md5_obj.update(self.xml_text.encode('utf-8'))
+		hash_str = md5_obj.hexdigest() 
+		query_to_list = list(Errors.objects.all())
+		for item in query_to_list:
+			if str(item) == hash_str:
+				return hash_str + 'old'
+			else:
+				err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
+				err_obj.save()
+		return hash_str
 		md5_obj = md5.new()
 		md5_obj.update(str(id(self)))
 		hash_str = md5_obj.hexdigest()
-		return unicode(hash_str)
+		return unicode(hash_str.encode('utf-8'))
 
 
 
