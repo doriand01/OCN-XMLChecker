@@ -1,9 +1,11 @@
 from django.db import models
-import md5
 from datetime import datetime
+import sys
+import md5
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 # Create your models here.
-err_list = []
 class Errors(models.Model):
 	errors = models.TextField()
 	_id = models.CharField(max_length=100)
@@ -15,6 +17,7 @@ class XMLElement(object):
 	def close(self):
 		self.closed = True
 	def __init__(self, tag_string, line_num):
+		self.err_list = []
 		self.closed = False
 		if not tag_string:
 			return
@@ -24,14 +27,14 @@ class XMLElement(object):
 			if closing_1 == -1:
 				closing = tag_string.find('/>')
 			if (opening_1 == -1) or (opening_2 == -1):
-				err_list.append("XMLElement at line {0} contains an error: Improper opening".format(line_num))
+				self.err_list.append(" line {0} contains an error: Improper opening / closing.".format(line_num))
 			self.string_list = tag_string.replace("<", "").replace(">", "").split()
 			self.element_name = self.string_list[0]
 		except (ValueError, IndexError) as e:
-			err_list.append("XMLElement {0} contains an error:{1}".format(self.element_name, str(e)))
+			err_list.append("line {0} contains an error:{1}".format(line_num, str(e)))
 	def isClosed(self):
 		if not self.closed:
-			err_list.append("XMLElement {0} contains an error: no closing tag")
+			self.err_list.append("line {0} contains an error: no closing tag".format(line_num))
 
 class MapElement(XMLElement):
 	def __init__(self, tag_string, line_num):
@@ -47,48 +50,31 @@ class MapElement(XMLElement):
 		proto_string = self.string_list[1]
 		print proto_string
 		if (proto_string.find('1.4.0')==-1):
-			err_list.append("XMLElement map contains an error: Protocol attribute is incorrect, should be 1.4.0.")
+			self.err_list.append("XMLElement map contains an error: Protocol attribute is incorrect, should be 1.4.0.")
 
 class UserFile(models.Model):
-	xml_text = models.TextField() 
-	def __str__(self):
-		found_error_object = False
+	xml_text = models.TextField()
+	def __init__(self, *args, **kwargs):
+		print kwargs
+		super(UserFile, self).__init__(*args, **kwargs) 
+		self.errors = []
 		for line in self.xml_text.split('\n'):
 			num = self.xml_text.split('\n').index(line) + 1
 			if ('<map' in line):
 				obj = MapElement(line, num)
+				for item in obj.err_list:
+					self.errors.append(item)
 			else:
 				obj = XMLElement(line, num)
-		md5_obj = md5.new()
-		md5_obj.update(self.xml_text)
-		hash_str = md5_obj.hexdigest() 
-		query_to_list = list(Errors.objects.all())
-		if query_to_list:
-			for item in query_to_list:
-				if str(item) == hash_str:
-					found_error_object = True
-					return hash_str + 'old'
-				if not found_error_object:
-					err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
-					err_obj.save()
-		else:
-			err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
-			err_obj.save()
-			return hash_str
-	def __unicode__(self):
-		found_error_object = False
+				for item in obj.err_list:
+					self.errors.append(item)
+			print 'Errors' + str(self.errors)
+	def __str__(self):
 		md5_obj = md5.new()
 		md5_obj.update(self.xml_text.encode('utf-8'))
-		hash_str = md5_obj.hexdigest() 
-		query_to_list = list(Errors.objects.all())
-		for item in query_to_list:
-			if str(item) == hash_str:
-				found_error_object = True
-				return hash_str + 'old'
-			if not found_error_object:
-				err_obj = Errors(errors='\n'.join(err_list), _id=hash_str)
-				err_obj.save()
-		return hash_str
+		hash_str = md5_obj.hexdigest()
+		return hash_str 
+	def __unicode__(self):
 		md5_obj = md5.new()
 		md5_obj.update(str(id(self)))
 		hash_str = md5_obj.hexdigest()

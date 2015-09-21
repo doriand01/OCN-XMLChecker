@@ -1,6 +1,6 @@
 <!DOCTYPE=html>
-<h1>XML Checker v0.1.3 by Dorian Dore</h1>
-	<form id="upload" action="{% url 'xmlchecker:check' %}" method="post">
+<h1>XML Checker v0.2.1 by Dorian Dore</h1>
+	<form name="upload" action="{% url 'xmlchecker:check' %}" method="post">
 	  {% csrf_token %}
 		<input name="Submit XML" type="submit"/>
 	</form>
