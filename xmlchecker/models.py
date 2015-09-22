@@ -26,12 +26,14 @@ class XMLElement(object):
 			closing_1, closing_2 = tag_string.find('</', opening_1 + 1), tag_string.find('>', opening_2 + 1)
 			if closing_1 == -1:
 				closing = tag_string.find('/>')
+				if closing == -1:
+					self.err_list.append(" line {0} contains an error: Improper opening / closing.".format(line_num))
 			if (opening_1 == -1) or (opening_2 == -1):
 				self.err_list.append(" line {0} contains an error: Improper opening / closing.".format(line_num))
 			self.string_list = tag_string.replace("<", "").replace(">", "").split()
 			self.element_name = self.string_list[0]
 		except (ValueError, IndexError) as e:
-			err_list.append("line {0} contains an error:{1}".format(line_num, str(e)))
+			self.err_list.append("line {0} contains an error:{1}".format(line_num, str(e)))
 	def isClosed(self):
 		if not self.closed:
 			self.err_list.append("line {0} contains an error: no closing tag".format(line_num))

@@ -8,7 +8,7 @@
 	</head>
 	<body>
 	<div class="ui center aligned container">
-		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.2.2</a></h2>
+		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.2.3</a></h2>
 		<h3 class="ui grey header">By <a href="https://github.com/TheMetaphorer">Dorian Dore</a></h3>
 			<form id="upload" class="ui form" action="{% url 'xmlchecker:check' %}" method="POST">
 			  {% csrf_token %}
@@ -20,5 +20,6 @@
   		</div>
 			</form>
 	</div>
+	<p>Contributions from Shawn Zimmer</p>
 </body>
 </html>
