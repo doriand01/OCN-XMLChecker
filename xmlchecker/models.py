@@ -24,14 +24,33 @@ class XMLElement(object):
 		try:
 			opening_1, opening_2 = tag_string.find('<'), tag_string.find('>')
 			closing_1, closing_2 = tag_string.find('</', opening_1 + 1), tag_string.find('>', opening_2 + 1)
-			if closing_1 == -1:
+			if (closing_1 == -1) and (closing_2 != -1):
 				closing = tag_string.find('/>')
-				if closing == -1:
+				if (closing == -1) and (closing_2 == -1):
 					self.err_list.append(" line {0} contains an error: Improper opening / closing.".format(line_num))
 			if (opening_1 == -1) or (opening_2 == -1):
 				self.err_list.append(" line {0} contains an error: Improper opening / closing.".format(line_num))
 			self.string_list = tag_string.replace("<", "").replace(">", "").split()
 			self.element_name = self.string_list[0]
+			for string in self.string_list:
+				if ('=' in string):
+					attr_val = string.find('"')
+					if (attr_val == -1):
+						self.err_list.append(
+							"line {0} contains an error: element attribute \
+							{1} does not have a proper value.".format(line_num, string.partition('=')))
+					elif (attr_val != -1):
+						if (attr_val + 1 == string.find('=')) and not \
+						   (string[-1] == '"'):
+							self.err_list.append(
+							"line {0} contains an error: element attribute \
+							{1} does not have a proper value.".format(line_num, string.partition('=')))
+					elif (attr_val != -1):
+						if (string.index('=') == -1):
+							self.err_list.append(
+							"line {0} contains an error: element attribute \
+							{1} does not have a proper value.".format(line_num, string.partition('"')))
+
 		except (ValueError, IndexError) as e:
 			self.err_list.append("line {0} contains an error:{1}".format(line_num, str(e)))
 	def isClosed(self):
