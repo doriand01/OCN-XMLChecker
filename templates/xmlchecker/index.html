@@ -1,91 +1,30 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 	<head>
-		<style type="text/css">
-		#codeTextarea{
-		  width:500px;
-		  height:510px;
-		}
-		.textAreaWithLines{
-		  font-family:courier;      
-		  border:1px solid #F00;
-		  
-		}
-		.textAreaWithLines textarea,.textAreaWithLines div{
-		  border:0px;
-		  line-height:120%;
-		  font-size:12px;
-		}
-		.lineObj{
-		  color:red;
-		}
-		</style>
-
-		<script type="text/javascript">
-
-		var lineObjOffsetTop = 2;
-
-		function createTextAreaWithLines(id)
-		{
-		  var el = document.createElement('DIV');
-		  var ta = document.getElementById(id);
-		  ta.parentNode.insertBefore(el,ta);
-		  el.appendChild(ta);
-		  
-		  el.className='textAreaWithLines';
-		  el.style.width = (ta.offsetWidth + 30) + 'px';
-		  ta.style.position = 'absolute';
-		  ta.style.left = '30px';
-		  el.style.height = (ta.offsetHeight + 2) + 'px';
-		  el.style.overflow='hidden';
-		  el.style.position = 'relative';
-		  el.style.width = (ta.offsetWidth + 30) + 'px';
-		  var lineObj = document.createElement('DIV');
-		  lineObj.style.position = 'absolute';
-		  lineObj.style.top = lineObjOffsetTop + 'px';
-		  lineObj.style.left = '0px';
-		  lineObj.style.width = '27px';
-		  el.insertBefore(lineObj,ta);
-		  lineObj.style.textAlign = 'right';
-		  lineObj.className='lineObj';
-		  var string = '';
-		  for(var no=1;no<200;no++){
-		     if(string.length>0)string = string + '<br>';
-		     string = string + no;
-		  }
-		  
-		  ta.onkeydown = function() { positionLineObj(lineObj,ta); };
-		  ta.onmousedown = function() { positionLineObj(lineObj,ta); };
-		  ta.onscroll = function() { positionLineObj(lineObj,ta); };
-		  ta.onblur = function() { positionLineObj(lineObj,ta); };
-		  ta.onfocus = function() { positionLineObj(lineObj,ta); };
-		  ta.onmouseover = function() { positionLineObj(lineObj,ta); };
-		  lineObj.innerHTML = string;
-		  
-		}
-
-		function positionLineObj(obj,ta)
-		{
-		  obj.style.top = (ta.scrollTop * -1 + lineObjOffsetTop) + 'px';   
-
-		  
-		}
-		</script>
-
 		<meta charset="utf-8">
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+		<link rel="stylesheet" href="{% static 'jquery-linedtextarea/jquery-linedtextarea.css' %}" type="text/css"></link>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
     </script>
+    	<script src="{% static 'jquery-linedtextarea/jquery-linedtextarea.js' %}" type="text/javascript"></script>
 		<title>OCN XML Validator</title>
 	</head>
 	<body>
 	<div class="ui center aligned container">
-		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.2.4</a></h2>
+		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.3.0</a></h2>
 		<h3 class="ui grey header">By <a href="https://github.com/TheMetaphorer">Dorian Dore</a></h3>
 			<form id="upload" class="ui form" action="{% url 'xmlchecker:check' %}" method="POST">
 			  {% csrf_token %}
-			<textarea id="input" rows="25" name="upload" placeholder="Enter XML Here." form="upload"></textarea><br><br>
-			<script type="text/javascript">createTextAreaWithLines('input');</script>
+			<textarea id="input" name="upload" placeholder="Enter XML Here." form="upload"></textarea><br><br>
+			<script>
+			$(function() {
+			  // Target a single one
+			  $("#input").linedtextarea();
+
+			});
+			</script>
 			<button class="ui button inverted animated green" name="Submit XML" value="Submit" type="submit"/>
   		<div class="visible content">Validate the XML!</div>
   		<div class="hidden content">
@@ -93,6 +32,6 @@
   		</div>
 			</form>
 	</div>
-	<a href="http://github.com/Szboy"><p>Frontend by Shawn Zimmer</p></a>
+	<a href="http://github.com/Szboy"><p>Contributions from Shawn Zimmer</p></a>
 </body>
 </html>

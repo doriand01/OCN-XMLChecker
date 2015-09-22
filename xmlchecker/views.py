@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import json
 from .models import UserFile, Errors
 import md5
 # Create your views here.
@@ -7,6 +8,7 @@ import md5
 def index(request):
 	return render(request, 'xmlchecker/index.html')
 def check(request):
+	print request.POST
 	obj = UserFile.objects.create(xml_text=str(request.POST.items()[2][1].encode('utf-8')))
 	obj.save()
 	hash_str = str(obj)
