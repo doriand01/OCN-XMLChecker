@@ -58,6 +58,6 @@ an issue!
 
 Contributors:
 
-Dorian Dore - _Dorian_D_
-
+- Dorian Dore - _Dorian_D_
+- Shawn Zimmer - _Szboy__
 
