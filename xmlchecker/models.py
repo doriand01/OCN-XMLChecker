@@ -43,19 +43,16 @@ class MapElement(XMLElement):
 			return
 		try:
 			self.string_list = tag_string.replace("<", "").replace(">", "").split()
-			print self.string_list
 			self.element_name = self.string_list[0]
 		except (ValueError, IndexError) as e:
 			self.errors.append("XMLElement map contains an error:{1}".format(self.element_name, str(e)))
 		proto_string = self.string_list[1]
-		print proto_string
 		if (proto_string.find('1.4.0')==-1):
 			self.err_list.append("XMLElement map contains an error: Protocol attribute is incorrect, should be 1.4.0.")
 
 class UserFile(models.Model):
 	xml_text = models.TextField()
 	def __init__(self, *args, **kwargs):
-		print kwargs
 		super(UserFile, self).__init__(*args, **kwargs) 
 		self.errors = []
 		for line in self.xml_text.split('\n'):
@@ -68,7 +65,6 @@ class UserFile(models.Model):
 				obj = XMLElement(line, num)
 				for item in obj.err_list:
 					self.errors.append(item)
-			print 'Errors' + str(self.errors)
 	def __str__(self):
 		md5_obj = md5.new()
 		md5_obj.update(self.xml_text.encode('utf-8'))
