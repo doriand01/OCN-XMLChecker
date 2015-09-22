@@ -1,10 +1,24 @@
-<!DOCTYPE=html>
-<h1>XML Checker v0.2.2 by Dorian Dore</h1>
-	<form id="upload" action="{% url 'xmlchecker:check' %}" method="POST">
-	  {% csrf_token %}
-	    <textarea size="25" name="upload" placeholder="Enter XML Here." form="upload"></textarea>
-		<input name="Submit XML" value="submit" type="submit"/>
-	</form>
-
-
-	
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+		<title>OCN XML Validator</title>
+	</head>
+	<body>
+	<div class="ui center aligned container">
+		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.2.2</a></h2>
+		<h3 class="ui grey header">By <a href="https://github.com/TheMetaphorer">Dorian Dore</a></h3>
+			<form id="upload" class="ui form" action="{% url 'xmlchecker:check' %}" method="POST">
+			  {% csrf_token %}
+			<textarea rows="25" name="upload" placeholder="Enter XML Here." form="upload"></textarea><br><br>
+			<button class="ui button inverted animated green" name="Submit XML" value="Submit" type="submit"/>
+  		<div class="visible content">Validate the XML!</div>
+  		<div class="hidden content">
+    		<i class="checkmark icon"></i>
+  		</div>
+			</form>
+	</div>
+</body>
+</html>
