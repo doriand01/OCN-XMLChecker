@@ -56,4 +56,8 @@ This code is completely open-source and free to edit. If you have any suggestion
 an issue!
 
 
+Contributors:
+
+Dorian Dore - _Dorian_D_
+
 
