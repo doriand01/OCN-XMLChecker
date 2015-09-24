@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-{% load staticfiles %}
 <html>
 	<head>
 		<meta charset="utf-8">
-    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
-    </script>
 		<title>OCN XML Validator</title>
 	</head>
 	<body>
 	<div class="ui center aligned container">
-		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.3.0</a></h2>
+		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.3.2</a></h2>
 		<h3 class="ui grey header">By <a href="https://github.com/TheMetaphorer">Dorian Dore</a></h3>
 			<form id="upload" class="ui form" action="{% url 'xmlchecker:check' %}" method="POST">
 			  {% csrf_token %}
-			<textarea id="input" name="upload" placeholder="Enter XML Here." form="upload"></textarea><br></br>
+			<textarea rows="25" name="upload" placeholder="Enter XML Here." form="upload"></textarea><br><br>
 			<button class="ui button inverted animated green" name="Submit XML" value="Submit" type="submit"/>
   		<div class="visible content">Validate the XML!</div>
   		<div class="hidden content">
@@ -23,6 +20,6 @@
   		</div>
 			</form>
 	</div>
-	<a href="http://github.com/Szboy"><p>Frontend by Shawn Zimmer</p></a>
+	<p style="color:#0F0">Frontend by <a href="http://github.com/Szboy">Shawn Zimmer "Szboy"</a></p>
 </body>
 </html>
