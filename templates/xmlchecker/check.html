@@ -1,9 +1,32 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
-<head>
-	<title></title>
-</head>
-<body>
-
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+    </script>
+		<title>OCN XML Validator</title>
+	</head>
+	<a href="https://github.com/TheMetaphorer/OCN-XMLChecker"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+	<div class="ui center aligned container">
+	<body>
+	<div class="ui center aligned container">
+		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.3.5</a></h2>
+		<h3 class="ui grey header">By <a href="https://github.com/TheMetaphorer">Dorian Dore</a></h3>
+	</div>
+	<h4>Errors: Your XML contained the following errors.</h4>
+	<p style="color:#F00">{{ errors }}</p>
+	<div class="ui center aligned container">
+		<a href="{% url 'xmlchecker:index' %}"><button class="ui button inverted animated green"><p style="text-align: center;">Understood!</p></button></a>
+	</div>
+	<a href="http://github.com/Szboy"><p>Frontend by Shawn Zimmer</p></a>
+	<section>
+		<h4>Changelog</h4>
+		<ul>
+			<li>0.3.5 - Rewrote 0.3.3's code, removed features, modified frontend.</li>
+			<li>0.3.4 - *Reverted to 0.2.2</li>
+		</ul>
+	</section>
 </body>
 </html>

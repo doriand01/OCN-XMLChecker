@@ -1,8 +1,7 @@
 # OCN-XMLChecker
 A Django webapp made to check OCN map XMLs for errors.
-### Requirements
-- Django 1.8.3
-- Python 2.7
+
+#DJANGO 1.8.3 IS REQUIRED TO INSTALL AND RUN THIS APP.
 
 <h3>Step one: Installing virtualenv</h3>
 
@@ -59,6 +58,6 @@ an issue!
 
 Contributors:
 
-- Dorian Dore - _Dorian_D_ Author
-- Shawn Zimmer - _Szboy__ Frontend
+- Dorian Dore - _Dorian_D_
+- Shawn Zimmer - _Szboy__
 

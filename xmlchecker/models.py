@@ -1,11 +1,10 @@
 from django.db import models
 from datetime import datetime
+from .defined import defined_elements
 import sys
 import md5
-
-valid_opening_vals = [str([True, True, False, False, False]), str([True, True, True, True, True]),
-str([True, True, True, False, False]), str([True, True, False, True, True])]
-
+valid_opening_vals = [str([True, True, False, True, True]), str([True, True, True, False, False]),
+str([True, True, False, False, False]), str([True, False, True, False, False])]
 reload(sys)
 sys.setdefaultencoding('utf8')
 # Create your models here.
@@ -20,12 +19,14 @@ class XMLElement(object):
 	def close(self):
 		self.closed = True
 	def __init__(self, tag_string, line_num):
-		self.err_string = "line {0} contains an error: ".format(line_num)
 		self.err_list = []
 		self.closed = False
-		tag_string = tag_string.replace('\n', '').replace('\r', '')
+		self.err_string = "line {0} contains an error: ".format(line_num)
+		tag_string = tag_string.replace('\n', ' ').replace('\r', ' ')
 		if (tag_string.find('<!') != -1):
 			tag_string = tag_string.partition('<!')[0]
+			if len(tag_string.partition('<!')) != 3:
+				return
 		if not tag_string:
 			return
 		opening_1, opening_2, opening_3 = tag_string.find('<'), tag_string.find('>'), tag_string.find('/>')
@@ -37,42 +38,24 @@ class XMLElement(object):
 			else:
 				tag_opening_values[tag_opening_values.index(item)] = True
 		if str(tag_opening_values) not in valid_opening_vals:
-			self.err_list.append(self.err_string + "Improper line opening/closing")
+			self.err_list.append(self.err_string + 'Improper opening/closing value.')
 			return
-		self.string_list = tag_string.replace("<", "").replace(">", "").split()
+		repls = {'<' : ' ', '</' : ' ', '>' : ' ', '/>' : ' '}
+		self.string_list = reduce(lambda a, kv: a.replace(*kv), repls.iteritems(), tag_string).split()
 		self.element_name = self.string_list[0]
-		for string in self.string_list:
-			if ('=' in string):
-				if (closing_1 == -1) and (closing_2 == -1) \
-				 and (tag_string.index('=') > tag_string.index('>')):
-					continue
-				if (closing_1 != -1) and (closing_2 != -1) \
-				and (tag_string.index('=') > tag_string.index('>')):
-					continue
-				attr_val = string.find('"')
-				if (attr_val == -1):
-					self.err_list.append("element attribute \
-						{1} does not have a proper value.".format(string.partition('=')))
-				elif (attr_val != -1):
-					if (attr_val + 1 == string.find('=')) and not \
-					   (string[-1] == '"'):
-						self.err_list.append("element attribute \
-						{1} does not have a proper value.".format(string.partition('=')))
-				elif (attr_val != -1):
-					if (string.index('=') == -1):
-						self.err_list.append("element attribute \
-						{1} does not have a proper value.".format(string.partition('"')))
+		if self.element_name not in defined_elements:
+			self.err_list.append(self.err_string + 'Element <{0}> is not defined in docs.oc.tc '.format(line_num))
+
 	def isClosed(self):
 		if not self.closed:
 			self.err_list.append("line {0} contains an error: no closing tag".format(line_num))
-
 class MapElement(XMLElement):
 	def __init__(self, tag_string, line_num):
 		super(MapElement, self).__init__(tag_string, line_num)
 		if not tag_string:
 			return
 		try:
-			self.string_list = tag_string.replace("<", "").replace(">", "").split()
+			self.string_list = tag_string.replace("<", " ").replace(">", " ").split()
 			self.element_name = self.string_list[0]
 		except (ValueError, IndexError) as e:
 			self.errors.append("XMLElement map contains an error:{1}".format(self.element_name, str(e)))
@@ -88,11 +71,11 @@ class UserFile(models.Model):
 		for line in self.xml_text.split('\n'):
 			num = self.xml_text.split('\n').index(line) + 1
 			if ('<map' in line):
-				obj = MapElement(str(line), num)
+				obj = MapElement(line, num)
 				for item in obj.err_list:
 					self.errors.append(item)
 			else:
-				obj = XMLElement(str(line), num)
+				obj = XMLElement(line, num)
 				for item in obj.err_list:
 					self.errors.append(item)
 	def __str__(self):
