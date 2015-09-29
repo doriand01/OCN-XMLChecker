@@ -75,12 +75,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'XXXX', # Either replace with your own postgresql databse, or
-        'USER': 'XXXX', # replace with a normal sqlite databse. However, sqlite
-        'PASSWORD': 'XXXX', # is 'lite' so it is limited, so database locking
-        'HOST' : '', # may occur while saving models.
-        'PORT' : '' # Empty host and port use default host and ports.
-    }
+        'NAME': 'XXXX', # replace this either with your own
+        'USER': 'XXXX', # postgres database, or a sqlite3 database.
+        'PASSWORD' : 'XXXX', #if using sqlite3, then change
+        'HOST' : '', #django.db.backends.postgresql_psycopg2 to
+        'PORT' : '' #django.db.backens.sqlite3, and remove 'HOST',
+    } #PORT, USER, and PASSWORD.
 }
 
 
