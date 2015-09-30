@@ -12,18 +12,9 @@
 	<div class="ui center aligned container">
 		<h2 class="ui header">XML Validator <a href="https://github.com/TheMetaphorer/OCN-XMLChecker">v0.3.7</a></h2>
 		<h3 class="ui grey header">By <a href="https://github.com/TheMetaphorer">Dorian Dore</a></h3>
-			<form id="upload" class="ui form" action="{% url 'xmlchecker:check' %}" method="POST">
-			  {% csrf_token %}
-			<textarea id="input" rows="25" name="upload" placeholder="Enter XML Here." form="upload"></textarea><br><br>
-			<button class="ui button inverted animated green" name="Submit XML" value="Submit" type="submit"/>
-  		<div class="visible content">Validate the XML!</div>
-  		<div class="hidden content">
-    		<i class="checkmark icon"></i>
-  		</div>
-			</form>
-	</div>
-	<a href="http://github.com/Szboy"><p>Frontend by Shawn Zimmer</p></a>
-	<section>
+    <p>No post data was detected in your request! Return to the <a href='/'>homepage</a>, insert some XML, and click validate!</p>
+  </div>
+  <section>
 		<h4>Changelog</h4>
 		<ul>
 			<li>0.3.7 - Fixed 500 server error when /check was accessed without sending POST data</li>
@@ -32,5 +23,5 @@
 			<li>0.3.4 - *Reverted to 0.2.2</li>
 		</ul>
 	</section>
-</body>
+  </body>
 </html>

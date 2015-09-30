@@ -26,6 +26,9 @@ class XMLElement(object):
 		self.closed = False
 		self.err_string = "line {0} contains an error: ".format(line_num)
 		self.err_string_es = "la línea {0} contiene un error:".format(line_num)
+		repls = {'<' : ' ', '</' : ' ', '>' : ' ', '/>' : ' '}
+		self.string_list = reduce(lambda a, kv: a.replace(*kv), repls.iteritems(), tag_string).split()
+		self.element_name = self.string_list[0]
 		tag_string = tag_string.replace('\n', ' ').replace('\r', ' ')
 		if (tag_string.find('<!') != -1):
 			tag_string = tag_string.partition('<!')[0]
@@ -45,9 +48,6 @@ class XMLElement(object):
 			self.err_list.append(self.err_string + 'Improper opening/closing value.')
 			self.err_list_es.append(self.err_string_es + 'Apertura inadecuado o valor de cierre.')
 			return
-		repls = {'<' : ' ', '</' : ' ', '>' : ' ', '/>' : ' '}
-		self.string_list = reduce(lambda a, kv: a.replace(*kv), repls.iteritems(), tag_string).split()
-		self.element_name = self.string_list[0]
 		if self.element_name not in defined_elements:
 			self.err_list.append(self.err_string + 'Element <{0}> is not defined in docs.oc.tc '.format(line_num))
 			self.err_list_es.append(self.err_string_es + 'Elemento <{0}> no está definido en docs.oc.tc')
@@ -76,16 +76,27 @@ class UserFile(models.Model):
 		super(UserFile, self).__init__(*args, **kwargs)
 		self.errors = []
 		self.errors_es = []
+		obj_list = {}
 		for line in self.xml_text.split('\n'):
 			num = self.xml_text.split('\n').index(line) + 1
 			if ('<map' in line):
 				obj = MapElement(line, num)
+				md5_obj = md5.new()
+				md5_obj.update(obj.element_name)
+				obj_hash = md5_obj.hexdigest()
+				if obj_hash in obj_list.keys():
+					pass
+				obj_list[obj_hash] = obj
 				for item in obj.err_list:
 					self.errors.append(item)
 				for item in obj.err_list_es:
 					self.errors_es.append(item)
 			else:
 				obj = XMLElement(line, num)
+				md5_obj = md5.new()
+				md5_obj.update(obj.element_name)
+				obj_hash = md5_obj.hexdigest()
+				obj_list[obj_hash] = obj
 				for item in obj.err_list:
 					self.errors.append(item)
 				for item in obj.err_list_es:

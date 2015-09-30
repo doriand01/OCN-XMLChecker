@@ -75,11 +75,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'XXXX', # replace this either with your own
-        'USER': 'XXXX', # postgres database, or a sqlite3 database.
-        'PASSWORD' : 'XXXX', #if using sqlite3, then change
+        'NAME': 'mayatta65', # replace this either with your own
+        'USER': 'mayatta65', # postgres database, or a sqlite3 database.
+        'PASSWORD' : 'aaaaaaaj', #if using sqlite3, then change
         'HOST' : '', #django.db.backends.postgresql_psycopg2 to
-        'PORT' : '' #django.db.backens.sqlite3, and remove 'HOST',
+        'PORT' : '' #django.db.backends.sqlite3, and remove 'HOST',
     } #PORT, USER, and PASSWORD.
 }
 
