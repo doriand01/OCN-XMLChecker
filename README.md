@@ -58,5 +58,5 @@ an issue!
 
 Contributors:
 
-- Dorian Dore - _Dorian_D_
-- Shawn Zimmer - _Szboy__
+- Dorian Dore - _Dorian_D_; App code and backend
+- Shawn Zimmer - _Szboy__; Frontend
