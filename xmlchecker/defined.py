@@ -42,7 +42,7 @@ defined_elements = ['map', 'name', 'version', 'objective',
 'shuffle-filter', 'block-drops', 'drops',
 'experience', 'replacement', 'wrongtool', 'punch', 'trample,',
 'fall-chance', 'land-chance', 'fall-speed', 'modes', 'mode',
-'?xml', 'if', 'unless'
+'?xml', 'if', 'unless', 'gamemode', 'gamemodes'
 ]
 for item in defined_elements:
 	if '-' in item:
