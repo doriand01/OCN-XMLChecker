@@ -49,7 +49,7 @@ class XMLElement(object):
 			self.err_list_es.append(self.err_string_es + 'Apertura inadecuado o valor de cierre.')
 			return
 		if self.element_name not in defined_elements:
-			self.err_list.append(self.err_string + 'Element <{0}> is not defined in docs.oc.tc '.format(line_num))
+			self.err_list.append(self.err_string + 'Element on line {0} is not defined in docs.oc.tc '.format(line_num))
 			self.err_list_es.append(self.err_string_es + 'Elemento <{0}> no está definido en docs.oc.tc')
 
 	def isClosed(self):

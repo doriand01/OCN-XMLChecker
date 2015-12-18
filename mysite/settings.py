@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mayatta65', # replace this either with your own
-        'USER': 'mayatta65', # postgres database, or a sqlite3 database.
-        'PASSWORD' : 'aaaaaaaj', #if using sqlite3, then change
+        'NAME': 'ubuntu', # replace this either with your own
+        'USER': 'ubuntu', # postgres database, or a sqlite3 database.
+        'PASSWORD' : 'database', #if using sqlite3, then change
         'HOST' : '', #django.db.backends.postgresql_psycopg2 to
         'PORT' : '' #django.db.backends.sqlite3, and remove 'HOST',
     } #PORT, USER, and PASSWORD.
@@ -103,5 +103,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
+    os.path.join(BASE_DIR, "mysite",  "static")
 ]
